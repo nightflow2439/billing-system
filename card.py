@@ -35,8 +35,8 @@ class Menu:
     print("3.注销卡")
     print("4.卡片充值")
     print("5.卡片退费")
-    print("6.退出")
-    print("7.显示所有卡")
+    print("6.显示所有卡")
+    print("7.退出")
     return eval(input("请选择："))
   
   def get_card(self, number):
@@ -104,9 +104,9 @@ if __name__ == "__main__":
   flag = True
   while flag:
     slt = m.show_menu()
-    if slt == 7:
+    if slt == 6:
       m.show_card_list()
-    elif slt == 6:
+    elif slt == 7:
       m.save_data()
       flag = False
     elif slt == 1:
