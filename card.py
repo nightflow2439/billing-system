@@ -33,8 +33,10 @@ class Menu:
     print("1.添加卡")
     print("2.查询卡")
     print("3.注销卡")
-    print("4.退出")
-    print("5.显示所有卡")
+    print("4.卡片充值")
+    print("5.卡片退费")
+    print("6.退出")
+    print("7.显示所有卡")
     return eval(input("请选择："))
   
   def get_card(self, number):
@@ -74,14 +76,37 @@ class Menu:
       self.card_list.remove(c)
       print("删除成功")
 
+  def recharge(self):
+    number = eval(input("请输入卡号："))
+    c = self.get_card(number)
+    if c is None:
+      print("未找到该卡")
+    else:
+      amount = eval(input("请输入充值金额："))
+      c.balance += amount
+      print("充值成功")
+
+  def refund(self):
+    number = eval(input("请输入卡号："))
+    c = self.get_card(number)
+    if c is None:
+      print("未找到该卡")
+    else:
+      amount = eval(input("请输入退费金额："))
+      if amount > c.balance:
+        print("余额不足，退费失败")
+      else:
+        c.balance -= amount
+        print("退费成功")
+
 if __name__ == "__main__":
   m = Menu()
   flag = True
   while flag:
     slt = m.show_menu()
-    if slt == 5:
+    if slt == 7:
       m.show_card_list()
-    elif slt == 4:
+    elif slt == 6:
       m.save_data()
       flag = False
     elif slt == 1:
@@ -90,3 +115,7 @@ if __name__ == "__main__":
       m.show_card()
     elif slt == 3:
       m.del_card()
+    elif slt == 4:
+      m.recharge()
+    elif slt == 5:
+      m.refund()
