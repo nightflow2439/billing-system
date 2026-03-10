@@ -19,7 +19,7 @@ class Menu:
   def load_standard(self):
     self.rate = 10
     if os.path.isfile("standard.txt"):
-      with open("active_users.txt", "r", encoding="utf-8") as f:
+      with open("standard.txt", "r", encoding="utf-8") as f:
         str = f.read().strip()
         if str and int(str) > 0:
           self.rate = int(str)
@@ -105,7 +105,6 @@ class Menu:
     hours = duration // 3600
     minutes = (duration % 3600) // 60
     seconds = duration % 60
-    print(duration)
     print("使用时间：%d小时%d分钟%d秒"%(hours, minutes, seconds))
     billing_hours = math.ceil(duration / 3600)
     rate = self.rate * billing_hours

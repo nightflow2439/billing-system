@@ -7,7 +7,7 @@ class Menu:
   def load_standard(self):
     self.rate = 10
     if os.path.isfile("standard.txt"):
-      with open("active_users.txt", "r", encoding="utf-8") as f:
+      with open("standard.txt", "r", encoding="utf-8") as f:
         str = f.read().strip()
         if str and int(str) > 0:
           self.rate = int(str)
