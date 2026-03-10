@@ -12,9 +12,17 @@ class Menu:
   def __init__(self):
     self.active_users = []
     self.card_list = []
-    self.rate = 10
     self.load_cards()
     self.load_active_users()
+    self.load_standard()
+
+  def load_standard(self):
+    self.rate = 10
+    if os.path.isfile("standard.txt"):
+      with open("active_users.txt", "r", encoding="utf-8") as f:
+        str = f.read().strip()
+        if str and int(str) > 0:
+          self.rate = int(str)
 
   def load_active_users(self):
     if os.path.isfile("active_users.txt"):
@@ -46,6 +54,12 @@ class Menu:
           c = Card(c_prop_list[0], int(c_prop_list[1]), int(c_prop_list[2]))
           self.card_list.append(c)
 
+  def save_cards(self):
+    with open("cards.txt", "w", encoding="utf-8") as f:
+      for c in self.card_list:
+        c_str = "{0}\t\t{1}\t\t{2}\n".format(c.name, c.number, c.balance)
+        f.write(c_str)
+
   def get_card(self, number):
     for c in self.card_list:
       if c.number == number:
@@ -60,8 +74,12 @@ class Menu:
 
   def check_in(self):
     user_num = eval(input("请输入卡号："))
-    if self.get_card(user_num) is None:
+    c = self.get_card(user_num)
+    if c is None:
       print("未找到该卡")
+      return
+    if c.balance < self.rate:
+      print("余额不足")
       return
     machine_num = eval(input("请输入机号："))
     if self.check_machine(machine_num) is not None:
@@ -90,7 +108,14 @@ class Menu:
     print(duration)
     print("使用时间：%d小时%d分钟%d秒"%(hours, minutes, seconds))
     billing_hours = math.ceil(duration / 3600)
-    print("费用：%d"%(self.rate * billing_hours))
+    rate = self.rate * billing_hours
+    print("消费金额：%d"%rate)
+    c = self.get_card(user_num)
+    c.balance -= rate
+    print("卡上余额：%d"%c.balance)
+    with open("records.txt", "a", encoding="utf-8") as f:
+      r_str = "{0}\t\t{1}\t\t{2}\t\t{3}\t\t{4}\t\t{5}\n".format(user_num, machine_num, check_in_time.isoformat(), check_out_time.isoformat(), rate, c.balance)
+      f.write(r_str)
 
   def show_machine_status(self):
     machine_num = eval(input("请输入机号："))
@@ -112,6 +137,7 @@ if __name__ == "__main__":
   while flag:
     slt = m.show_menu()
     if slt == 4:
+      m.save_cards()
       m.save_active_users()
       flag = False
     elif slt == 1:
