@@ -10,23 +10,23 @@ class Card:
     print("%s\t\t%d\t\t%d"%(self.name, self.number, self.balance))
 
 class Menu:
-  def load_data(self):
-    if os.path.isfile("card.db"):
-      with open("card.db", "r", encoding="utf-8") as f:
+  def load_cards(self):
+    if os.path.isfile("cards.txt"):
+      with open("cards.txt", "r", encoding="utf-8") as f:
         for c_str in f.readlines():
           c_prop_list = c_str.strip().split("\t\t")
           c = Card(c_prop_list[0], int(c_prop_list[1]), int(c_prop_list[2]))
           self.card_list.append(c)
 
-  def save_data(self):
-    with open("card.db", "w", encoding="utf-8") as f:
+  def save_cards(self):
+    with open("cards.txt", "w", encoding="utf-8") as f:
       for c in self.card_list:
         c_str = "{0}\t\t{1}\t\t{2}\n".format(c.name, c.number, c.balance)
         f.write(c_str)
 
   def __init__(self):
     self.card_list = []
-    self.load_data()
+    self.load_cards()
 
   def show_menu(self):
     print("欢迎使用卡片管理系统")
@@ -107,7 +107,7 @@ if __name__ == "__main__":
     if slt == 6:
       m.show_card_list()
     elif slt == 7:
-      m.save_data()
+      m.save_cards()
       flag = False
     elif slt == 1:
       m.add_card()
